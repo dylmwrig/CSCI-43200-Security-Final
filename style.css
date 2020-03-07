@@ -1,0 +1,23 @@
+body {
+
+    padding-left: 10px;
+    background-color: #D8CFD0;
+    margin: auto;
+    height: 100%;
+    max-width: 70%;
+}
+
+h1 {
+    height: 30%;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.textInput {
+    font-family: 'Times New Roman', Times, serif;
+    font-size:20px;
+    width: 50%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
