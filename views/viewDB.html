@@ -1,0 +1,28 @@
+<%
+sqlScript = "SELECT * FROM users"
+result = c.execute(sqlScript) #result ends up being a list, or tuple maybe? point is, it's iterable.
+%>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>View DB</title>
+</head>
+
+<body>
+    Database entries:
+    </br>
+    </br>
+    %for record in result:
+        {{ record[0] }}
+        {{ record[1] }}
+        {{ record[2] }}
+        </br>
+    %end
+    </br>
+    <button type="button" onclick="document.location.href='/resetDB'">Reset the database</button>
+    <button type="button" onclick="document.location.href='/getInput'">Add another entry</button>
+</body>
+
+</html>

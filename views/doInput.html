@@ -1,0 +1,26 @@
+<%
+
+### grab the info from the username and password fields and insert them into the database
+c.execute("INSERT INTO users VALUES (null, ?, ?)", (txtField, passField))
+db.commit()
+
+%>
+
+<html lang = "en-us">
+    <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Added user to database</title>
+    </head>
+
+    <body>
+        added {{ txtField }} to the database. <!-- this is how to insert a python variable into the html of the page -->
+    </body>
+
+    </br>
+
+    <button type="button" onclick="document.location.href='/getInput'">Add another entry</button>
+    <button type="button" onclick="document.location.href='/viewDB'">View the database</button>
+    <button type="button" onclick="document.location.href='/resetDB'">Reset the database</button>
+
+</html>
