@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang = "en-us">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Log in</title>
+    </head>
+    <body>
+
+    <form action = "/login" method = "post">
+      <p>Can't hack me</p>
+      <input type = "text" name = "txtField">
+      <input type = "password" name = "passField">
+      <button>submit</button>
+    </form>
+    Database entries:
+    </br>
+    </br>
+
+    %for record in res:
+        %for r in record:
+            {{ r }}
+    %end
+        </br>
+    </body>
+</html>

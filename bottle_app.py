@@ -1,12 +1,14 @@
-from bottle import default_app, route, template, get, post, request
+from bottle import default_app, route, template, get, post, request, run
 import sqlite3
+import bottle_sqlite
 
-db = sqlite3.connect("./mysite/testdb.db")
+db = sqlite3.connect("./testdb.db")
 c = db.cursor()
 
 ###########################################
 
 # HANDLES DISPLAYING THE /getInput PAGE
+@route('/')
 @get('/getInput')
 def getInput():
     return template("getInput.html")
@@ -19,6 +21,30 @@ def doInput():
     passField = request.forms.get('passField')
     return template("doInput.html", txtField=txtField, passField=passField, db=db, c=c)
 
+@route('/login')
+def GETLogin():
+    txtField = request.forms.get('txtField')
+    passField = request.forms.get('passField')
+
+    sql = "SELECT * FROM users WHERE id = 5 or 1=1"
+    c.execute(sql)
+    res = c.fetchall()
+
+    db.commit()
+
+    return template("login.html", db=db, c=c, res=res)
+
+@post('/login')
+def POSTLogin():
+    txtField = request.forms.get('txtField')
+    passField = request.forms.get('passField')
+
+    sql = "SELECT * FROM users WHERE name = '" + txtField + "' AND password = '" + passField + "'"
+    print(sql)
+    res = c.execute(sql)
+    db.commit()
+
+    return template("login.html", db=db, c=c, res=res)
 
 # HANDLES RESETTING THE DATABASE WITH DEFAULT USERS AND PASSWORDS
 @route('/resetDB')
@@ -50,3 +76,4 @@ def viewDB():
 
 application = default_app() #not sure what this does but everything breaks without it :)
 
+run()

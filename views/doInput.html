@@ -1,6 +1,7 @@
 <%
 
 ### grab the info from the username and password fields and insert them into the database
+print("INSERT INTO users VALUES (null, ?, ?), (txtField, passField)")
 c.execute("INSERT INTO users VALUES (null, ?, ?)", (txtField, passField))
 db.commit()
 
@@ -19,6 +20,7 @@ db.commit()
 
     </br>
 
+    <button type="button" onclick="document.location.href='/login'">Log in</button>
     <button type="button" onclick="document.location.href='/getInput'">Add another entry</button>
     <button type="button" onclick="document.location.href='/viewDB'">View the database</button>
     <button type="button" onclick="document.location.href='/resetDB'">Reset the database</button>
