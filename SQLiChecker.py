@@ -4,6 +4,7 @@ import time
 import tkinter as tk
 from tkinter import filedialog
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from seleniumrequests import Chrome
 from selenium.webdriver.common.keys import Keys
 
@@ -27,7 +28,10 @@ def runAttacks(url):
     driver.get(url)
     time.sleep(2)
     form1 = driver.find_element_by_name('txtField')
-    form2 = driver.find_element_by_name('passField')
+    try:
+        form2 = driver.find_element_by_name('passField')
+    except NoSuchElementException:
+        print("passField not found")
     forms = driver.find_elements_by_tag_name('input')
 
     for form in forms:
