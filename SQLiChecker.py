@@ -33,8 +33,8 @@ def runAttacks(url):
     except NoSuchElementException:
         print("passField not found")
     forms = driver.find_elements_by_tag_name('input')
-
-    for form in forms:
+    i = 0
+    while i < len(forms) - 1:
         # continue trying until we run out of queries
         for query in INJECTION_QUERIES:
             print("QUERY START: " + query)
@@ -49,18 +49,26 @@ def runAttacks(url):
             if not driver.request('POST', url).ok: # returns true if http status code is less than 400
                 print("500!")
                 print(query)
-                time.sleep(5)
                 #driver.close()
                 #driver = Chrome()
                 #.get(url)
-                driver.get(url)
-                time.sleep(2)
+                forms[i].submit()
+                time.sleep(3)
                 #break
             else:               #if the form will submit without error,
-                form.submit()   #submit the form
+                forms[i].submit()   #submit the form
 
             #form.submit()
+            driver.back()
             time.sleep(3)
+
+            forms = driver.find_elements_by_tag_name('input')
+            for form in forms:
+                form.clear()
+            time.sleep(2)
+            i += 1
+            print(i)
+            print(len(forms))
     driver.quit()
 
 # setup UI
