@@ -34,7 +34,7 @@ def runAttacks(url):
         print("passField not found")
     forms = driver.find_elements_by_tag_name('input')
     i = 0
-    while i < len(forms) - 1:
+    while i < len(forms):
         # continue trying until we run out of queries
         for query in INJECTION_QUERIES:
             print("QUERY START: " + query)
