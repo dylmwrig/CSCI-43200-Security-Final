@@ -37,15 +37,16 @@ def runAttacks(url):
     for form in forms:
         # continue trying until we run out of queries
         for query in INJECTION_QUERIES:
-            print("QUERY START " + query)
+            print("QUERY START: " + query)
             forms = driver.find_elements_by_tag_name('input')
             # we need to input our injections without knowing what inputs require other inputs to submit
             # so loop through every form element not being injected to and fill it with sample data
             for otherForm in forms:
                 otherForm.send_keys(query)
                 time.sleep(1)
-            # returns true if http status code is less than 400
-            if not driver.request('POST', url).ok:
+
+
+            if not driver.request('POST', url).ok: # returns true if http status code is less than 400
                 print("500!")
                 print(query)
                 time.sleep(5)
@@ -54,8 +55,11 @@ def runAttacks(url):
                 #.get(url)
                 driver.get(url)
                 time.sleep(2)
-                break
-            form.submit()
+                #break
+            else:               #if the form will submit without error,
+                form.submit()   #submit the form
+
+            #form.submit()
             time.sleep(3)
     driver.quit()
 
