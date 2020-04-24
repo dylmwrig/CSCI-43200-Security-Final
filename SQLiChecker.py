@@ -34,7 +34,8 @@ def runAttacks(url):
         print("passField not found")
     forms = driver.find_elements_by_tag_name('input')
     i = 0
-    while i < len(forms):
+    keepGoing = True
+    while keepGoing:
         # continue trying until we run out of queries
         for query in INJECTION_QUERIES:
             print("QUERY START: " + query)
@@ -44,7 +45,6 @@ def runAttacks(url):
             for otherForm in forms:
                 otherForm.send_keys(query)
                 time.sleep(1)
-
 
             if not driver.request('POST', url).ok: # returns true if http status code is less than 400
                 print("500!")
@@ -57,18 +57,22 @@ def runAttacks(url):
                 #break
             else:               #if the form will submit without error,
                 forms[i].submit()   #submit the form
+                time.sleep(3)
 
             #form.submit()
-            driver.back()
+            driver.get(url)
             time.sleep(3)
 
             forms = driver.find_elements_by_tag_name('input')
             for form in forms:
                 form.clear()
             time.sleep(2)
-            i += 1
-            print(i)
-            print(len(forms))
+        i += 1
+        print("i " + str(i))
+        print("len forms: " + str(len(forms)))
+        if (i >= len(forms)):
+            keepGoing = False
+            break
     driver.quit()
 
 # setup UI
